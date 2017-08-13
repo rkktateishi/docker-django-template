@@ -1,0 +1,33 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./config:/etc/nginx/conf.d
+      - ./static:/src/static
+    depends_on:
+      - "web"
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER={{project_name}}
+      - POSTGRES_PASSWORD={{project_name}}
+      - POSTGRES_DB={{project_name}}
+  redis:
+    image: redis:alpine
+    ports: 
+      - "6379:6379"
+  web:
+    build: .
+    command: ["./docker-entrypoint.sh", "base", "8000", 1"]
+    volumes:
+      - .:/code
+      - ./static:/static
+    expose:
+      - "8000"
+    depends_on:
+      - "db"
+      - "redis"
+
