@@ -128,7 +128,7 @@ MEDIA_URL = 'media/'
 STATIC_ROOT = public_root('static')
 STATIC_URL = 'static/'
 
-SECRET_KEY = '{{ secret_key }}' # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
+SECRET_KEY = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
 
 CACHES = {
     'default': {
